@@ -1,5 +1,5 @@
 
-OPTROOT=/usr/lib/erlang/lib/erl_interface-*
+OTPROOT=/usr/lib/erlang/lib/erl_interface-*
 
 all:	bin/cnodeserver bin/cnodeclient bin/complex3.beam
 
@@ -8,13 +8,14 @@ bin/%.beam:	src/%.erl
 
 bin/%:	src/%.c
 	mkdir -p bin
-	gcc -o $@ -I$(OPTROOT)/include -L$(OPTROOT)/lib src/complex.c $< -lerl_interface -lei -lpthread -lnsl
+	gcc -o $@ -I$(OTPROOT)/include -L$(OTPROOT)/lib src/complex.c $< -lerl_interface -lei -lpthread -lnsl
 
 clean:
 	rm -rf bin
 
 
 start_server:
+	epmd -daemon
 	bin/cnodeserver 3456
 
 start_client:
