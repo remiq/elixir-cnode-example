@@ -38,17 +38,18 @@ int main(int argc, char **argv) {
   if (erl_publish(port) == -1)
     erl_err_quit("erl_publish");
 
-  if ((fd = erl_accept(listen, &conn)) == ERL_ERROR)
-    erl_err_quit("erl_accept");
-  fprintf(stderr, "Connected to %s\n\r", conn.nodename);
-
   while (loop) {
+	  if ((fd = erl_accept(listen, &conn)) == ERL_ERROR)
+	    erl_err_quit("erl_accept");
+	  fprintf(stderr, "Connected to %s\n\r", conn.nodename);
+
 
     got = erl_receive_msg(fd, buf, BUFSIZE, &emsg);
     if (got == ERL_TICK) {
       /* ignore */
     } else if (got == ERL_ERROR) {
-      loop = 0;
+      fprintf(stderr, "error received, listening now\n\r");
+      //loop = 0;
     } else {
 
       if (emsg.type == ERL_REG_SEND) {
@@ -86,7 +87,7 @@ int my_listen(int port) {
 
   setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
 
-  memset((void*) &addr, 0, (size_t) sizeof(addr));
+  //memset((void*) &addr, 0, (size_t) sizeof(addr));
   addr.sin_family = AF_INET;
   addr.sin_port = htons(port);
   addr.sin_addr.s_addr = htonl(INADDR_ANY);
