@@ -1,5 +1,5 @@
 
-OTPROOT=/usr/lib/erlang/lib/erl_interface-*
+OTPROOT=$(wildcard /opt/erlang/lib/erl_interface-*)
 
 all:	bin/cnodeserver bin/cnodeclient bin/complex3.beam
 
